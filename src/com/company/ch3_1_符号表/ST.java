@@ -1,18 +1,14 @@
 package com.company.ch3_1_符号表;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
  * 符号表API
  */
 public interface ST<Key extends Comparable<Key>, Value> {
-    void put(Key key, Value value);//将键值对存入表中（value为空则将key删除）
+    void put(Key key, Value val);//将键值对存入表中（value为空则将key删除）
 
     Value get(Key key);//获取key对应的value（若key不存在则返回空）
 
