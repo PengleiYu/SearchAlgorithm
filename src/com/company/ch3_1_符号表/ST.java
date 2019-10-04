@@ -28,13 +28,24 @@ public interface ST<Key extends Comparable<Key>, Value> {
 
     Key select(int k);//排名为k的键
 
-    void deleteMin();//删除最小的键
+    default void deleteMin() {//删除最小的键
+        delete(min());
+    }
 
-    void deleteMax();//删除最大的键
+    default void deleteMax() {//删除最大的键
+        delete(max());
+    }
 
-    int size(Key lo, Key hi);//[lo..hi]之间键的数量
+    default int size(Key lo, Key hi) {//[lo..hi]之间键的数量
+        if (hi.compareTo(lo) < 0) return 0;
+        else if (contains(hi))
+            return rank(hi) - rank(lo) + 1;
+        else return rank(hi) - rank(lo);
+    }
 
     Iterable<Key> keys(Key lo, Key hi);//[lo..hi]之间的所有键，已排序
 
-    Iterable<Key> keys();//表中所有的键，已排序
+    default Iterable<Key> keys() {//表中所有的键，已排序
+        return keys(min(), max());
+    }
 }
