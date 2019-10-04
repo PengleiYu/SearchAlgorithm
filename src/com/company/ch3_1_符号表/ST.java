@@ -1,5 +1,13 @@
 package com.company.ch3_1_符号表;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 /**
  * 符号表API
  */
@@ -47,5 +55,37 @@ public interface ST<Key extends Comparable<Key>, Value> {
 
     default Iterable<Key> keys() {//表中所有的键，已排序
         return keys(min(), max());
+    }
+
+    /**
+     * 行为测试用例
+     */
+    static void stTestCase(ST<String, Integer> st) {
+        String[] inputs = "SEARCHEXAMPLE".split("");
+        for (int i = 0; i < inputs.length; i++)
+            st.put(inputs[i], i);
+        for (String s : st.keys())
+            System.out.println(s + " " + st.get(s));
+    }
+
+    /**
+     * 性能测试用例
+     */
+    static void stFrequencyCounter(ST<String, Integer> st) throws FileNotFoundException {
+        int minLen = 1;
+        Scanner scanner = new Scanner(new FileInputStream("asset/tale.txt"));
+        while (scanner.hasNext()) {
+            String word = scanner.next();
+            if (word.length() < minLen) continue;
+            if (!st.contains(word)) st.put(word, 1);
+            else st.put(word, st.get(word) + 1);
+        }
+        String max = "";
+        st.put(max, 0);
+        for (String word : st.keys())
+            if (st.get(word) > st.get(max))
+                max = word;
+        System.out.println(max + " " + st.get(max));
+
     }
 }
